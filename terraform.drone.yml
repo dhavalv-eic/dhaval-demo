@@ -1,22 +1,3 @@
 pipeline:
-  - name: engine_test
-    image: python:3.7.2
-    commands:
-      - cd services/game
-      # Install dependencies
-      - pip install -r requirements.txt
-      # Start with a fresh database (which is already running as a service from Drone)
-      - python manage.py recreate_db
-      # Start the Flask server
-      - gunicorn manage:app --daemon
-      # Run tests against the Flask app
-      - python manage.py test
-    environment:
-      FLASK_ENV: production
-      APP_SETTINGS: project.config.TestingConfig
-      # `gamedb` below is the name of the service database that Drone is managing
-      DATABASE_TEST_URL: postgres://postgres:postgres@gamedb:5432/game_test
-    volumes:
-      # Mount pip cache from host
-      - name: pip_cache
-        path: /root/.cache/pip
+  terraform:
+    image: jmccann/drone-terraform:5
